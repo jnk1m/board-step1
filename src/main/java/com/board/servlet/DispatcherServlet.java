@@ -6,8 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -16,30 +14,34 @@ import java.io.IOException;
 
 @Slf4j
 @WebServlet(name = "frontServlet", urlPatterns = "*.do")
-public class FrontServlet extends HttpServlet {
+public class DispatcherServlet extends HttpServlet {
   private static final String REDIRECT_PREFIX = "redirect:";
 
   @Override
   protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-    try{
+    log.info(getClass().getSimpleName() + "!!!!!!!!!!!");
+    try {
       Command command = resolveServlet(req.getServletPath());
-      String view = command.execute(req,resp);
+      String view = command.execute(req, resp);
 
-      if(view.startsWith(REDIRECT_PREFIX)){
+      if (view.startsWith(REDIRECT_PREFIX)) {
         resp.sendRedirect(view.substring(REDIRECT_PREFIX.length()));
-      }else {
+      } else {
         RequestDispatcher requestDispatcher = req.getRequestDispatcher(view);
-        requestDispatcher.forward(req,resp);
+        requestDispatcher.forward(req, resp);
       }
-    }catch (Exception e){
-      log.error(" ",e);
+    } catch (Exception e) {
+      log.error(" ", e);
     }
   }
 
-  private Command resolveServlet(String servletPath){
+  private Command resolveServlet(String servletPath) {
+    log.info(getClass().getSimpleName() + "!!!!!!!!!!!");
+    log.info(servletPath + "!!!!!!!!!!!");
+
     Command command = null;
 
-    if("login.do".equals(servletPath)){
+    if ("/login.do".equals(servletPath)) {
       command = new Login();
     }
 

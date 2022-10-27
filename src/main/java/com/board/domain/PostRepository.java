@@ -1,4 +1,4 @@
-package com.board.model;
+package com.board.domain;
 
 import com.board.entity.Post;
 

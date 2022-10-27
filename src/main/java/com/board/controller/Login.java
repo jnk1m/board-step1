@@ -1,5 +1,6 @@
 package com.board.controller;
 
+import com.board.domain.UserRepository;
 import com.board.entity.User;
 import lombok.extern.slf4j.Slf4j;
 
@@ -13,7 +14,7 @@ import java.util.Objects;
 public class Login implements Command{
   @Override
   public String execute(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-    log.info(getClass().getSimpleName()+"!!!!!!!!");
+    log.info(getClass().getName()+"!!!!!!!!");
 
     String method = req.getMethod();
 
@@ -26,7 +27,7 @@ public class Login implements Command{
   }
 
   protected String doGet(HttpServletRequest req, HttpServletResponse resp){
-    log.info(getClass().getSimpleName()+"!!!!!!!!");
+    log.info("doGet!!!!!!!!");
 
     HttpSession session = req.getSession();
     String id = (String)session.getAttribute("id");
@@ -41,9 +42,12 @@ public class Login implements Command{
   }
 
   protected String doPost(HttpServletRequest req, HttpServletResponse resp){
-    log.info(getClass().getSimpleName()+"!!!!!!!!");
+    log.info("doPost!!!!!!!!");
 
     User user = (User)req.getServletContext().getAttribute("user");
+
+    UserRepository userRepository =(UserRepository)req.getServletContext().getAttribute("userRepository");
+    userRepository.getUser(id)
 
     String requestId = user.getId();
     String requestPassword = user.getPassword();
