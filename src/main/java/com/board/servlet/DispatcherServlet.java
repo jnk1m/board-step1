@@ -1,7 +1,6 @@
 package com.board.servlet;
 
-import com.board.controller.Command;
-import com.board.controller.Login;
+import com.board.controller.*;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.RequestDispatcher;
@@ -13,16 +12,16 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Slf4j
-@WebServlet(name = "frontServlet", urlPatterns = "*.do")
+@WebServlet(name = "dispatcherServlet", urlPatterns = "*.do")
 public class DispatcherServlet extends HttpServlet {
   private static final String REDIRECT_PREFIX = "redirect:";
 
   @Override
   protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-    log.info(getClass().getSimpleName() + "!!!!!!!!!!!");
     try {
       Command command = resolveServlet(req.getServletPath());
       String view = command.execute(req, resp);
+      log.info("@@@@@@@"+view+"@@@@@");
 
       if (view.startsWith(REDIRECT_PREFIX)) {
         resp.sendRedirect(view.substring(REDIRECT_PREFIX.length()));
@@ -36,13 +35,15 @@ public class DispatcherServlet extends HttpServlet {
   }
 
   private Command resolveServlet(String servletPath) {
-    log.info(getClass().getSimpleName() + "!!!!!!!!!!!");
-    log.info(servletPath + "!!!!!!!!!!!");
-
     Command command = null;
-
     if ("/login.do".equals(servletPath)) {
-      command = new Login();
+      command = new LoginController();
+    } else if ("/language.do".equals(servletPath)) {
+      command = new LanguageController();
+    } else if ("/signUp.do".equals(servletPath)) {
+      command = new SignUpController();
+    } else if ("/eachUser.do".equals(servletPath)) {
+      command = new ViewEachUserController();
     }
 
     return command;

@@ -15,6 +15,9 @@
             <param-name>exclude-urls</param-name>
             <param-value>/loginForm.jsp
                 /login.do
+                /language.do
+                /signUpForm.jsp
+                /signUp.do
             </param-value>
         </init-param>
     </filter>

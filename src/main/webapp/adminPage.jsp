@@ -4,22 +4,27 @@
 <html>
 <fmt:setLocale value="${sessionScope.language}"/>
 <fmt:bundle basename="language">
-<head>
-    <title><fmt:message key="AdminPage"/></title>
-</head>
-<body>
-<h1><fmt:message key="AdminPage"/></h1>
+    <head>
+        <title><fmt:message key="AdminPage"/></title>
+    </head>
+    <body>
+    <h1><fmt:message key="AdminPage"/></h1>
+    <h3><fmt:message key="UserList"/></h3>
+    <c:set var="userRepository" value="${applicationScope.userRepository}"/>
+    <c:set var="userList" value="${userRepository.getUsers()}"/>
+    <table border="1">
+        <c:forEach items="${userList}" var="user">
+            <tr>
+                <form method="post" action="/eachUser.do">
+                    <td><input type="checkbox" name="userId" value="${user.getId()}"></td>
+                    <td><fmt:message key="Name"/>: <c:out value="${user.getName()}"/></td>
+                    <td><fmt:message key="Profile"/>: <c:out value="${user.getProfileFileName()}"/></td>
+                    <td><input type="submit" value="<fmt:message key="Go"/>"></td> <br/>
+                </form>
+            </tr>
+        </c:forEach>
+    </table>
 
-<%--사용자 조회 화면에서는 이름과 프로필 이미지만 보여준다
-
---%>
-<c:forEach items="${sessionScope.cart.getItems()}" var="item">
-    <input type="checkbox" name="itemQty" value="${item.getQuantity()}">
-    <input type="hidden" name="itemName" value="${item.getName()}"/>
-    <fmt:message key="Name"/>: ${item.getName()} |
-    <fmt:message key="Won"/>: ${item.getPrice()} | <fmt:message key="Quantity"/>: ${item.getQuantity()}<br/>
-</c:forEach>
-
-</body>
+    </body>
 </fmt:bundle>
 </html>

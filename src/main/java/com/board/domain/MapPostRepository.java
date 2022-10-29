@@ -5,7 +5,7 @@ import com.board.entity.Post;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class ListPostRepository implements PostRepository {
+public class MapPostRepository implements PostRepository {
   ConcurrentHashMap<String, Post> postMap = new ConcurrentHashMap<>();
 
   @Override
